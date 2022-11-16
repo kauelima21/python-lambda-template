@@ -1,0 +1,48 @@
+service: sls-template
+
+frameworkVersion: ">=3.15.0"
+
+plugins:
+  - serverless-localstack
+
+package:
+  individually: true
+  excludeDevDependencies: false
+  include:
+    - src/**
+  exclude:
+    - node_module/**
+    - ./**
+
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+    endpointFile: localstack.json
+  splitStacks:
+    perFunction: true
+    perType: false
+    perGroupFunction: false
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, 'local'}
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  - ${file(src/handlers/http/user/routes.yml)}

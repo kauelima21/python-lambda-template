@@ -1,0 +1,45 @@
+create_user:
+  handler: src/handlers/http/user/create_user.handler
+  environment:
+    DYNAMODB_TABLE: users-${sls:stage}
+  events:
+    - http:
+        method: POST
+        path: user/new
+        cors: true
+find_all_users:
+  handler: src/handlers/http/user/find_all_users.handler
+  environment:
+    DYNAMODB_TABLE: users-${sls:stage}
+  events:
+    - http:
+        method: GET
+        path: users
+        cors: true
+find_user:
+  handler: src/handlers/http/user/find_user.handler
+  environment:
+    DYNAMODB_TABLE: users-${sls:stage}
+  events:
+    - http:
+        method: GET
+        path: user/{user_id}
+        cors: true
+update_user:
+  handler: src/handlers/http/user/update_user.handler
+  environment:
+    DYNAMODB_TABLE: users-${sls:stage}
+  events:
+    - http:
+        method: PUT
+        path: user/{user_id}
+        cors: true
+delete_user:
+  handler: src/handlers/http/user/delete_user.handler
+  environment:
+    DYNAMODB_TABLE: users-${sls:stage}
+  events:
+    - http:
+        method: DELETE
+        path: user/{user_id}
+        cors: true
