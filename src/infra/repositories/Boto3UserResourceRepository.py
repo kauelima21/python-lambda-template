@@ -7,10 +7,10 @@ from src.domain.repositories.UserRepository import UserRepository
 
 
 class Boto3UserResourceRepository(UserRepository):
-    def __init__(self, table_name: str, primary: str = "id"):
+    def __init__(self, primary: str = "id"):
         super().__init__()
         self._primary = primary
-        self._table_name = table_name
+        self._table_name = os.environ["DYNAMODB_TABLE"]
         if 'LOCALSTACK_HOSTNAME' in os.environ:
             dynamodb_endpoint = 'http://%s:4566' % os.environ['LOCALSTACK_HOSTNAME']
             self._resource = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint)

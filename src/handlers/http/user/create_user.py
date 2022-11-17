@@ -1,4 +1,3 @@
-import os
 import json
 from src.utils.json_response import json_response
 from src.domain.use_cases.CreateUser import CreateUser
@@ -7,7 +6,7 @@ from src.infra.repositories.Boto3UserResourceRepository import Boto3UserResource
 
 def handler(event, context):
     data = json.loads(event["body"])
-    repository = Boto3UserResourceRepository(os.environ["DYNAMODB_TABLE"])
+    repository = Boto3UserResourceRepository()
     use_case = CreateUser(repository)
     user = use_case.execute({
         "first_name": data["first_name"],
