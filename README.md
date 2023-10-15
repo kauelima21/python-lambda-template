@@ -1,7 +1,7 @@
 # aws-python-sls-template
 My personal template for aws lambda development with python and localstack.
 
-## What you need?
+## What do you need?
 
 - [serverless framework](https://www.serverless.com/framework/) (version 3.15 or higher)
 - [docker](https://docs.docker.com/)
